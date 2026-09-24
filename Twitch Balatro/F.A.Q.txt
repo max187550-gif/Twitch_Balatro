@@ -1,0 +1,169 @@
+F.A.Q.
+
+English
+
+Where do I find the mod settings?
+Open the main menu -> Mods -> Twitch Balatro -> Config. There you'll find three toggles:
+
+Chat - show or hide the live chat overlay.
+Run Intro - show or hide the "Stream Starting" intro at the beginning of each run.
+Donators Panel - show or hide the top-donators panel in the bottom-right corner.
+
+How do I change my avatar?
+1. Prepare a square image (PNG). Recommended size: 256x256 or 512x512.
+2. Rename it to avatar.png.
+3. Put it into the mod folder:
+
+%appdata%\Balatro\Mods\Twitch Balatro\assets\icons\avatar.png
+
+4. Restart the game.
+
+If the file is missing or broken, the panel shows the first letter of your account name instead.
+
+How do I open my channel panel?
+In the main menu, click the YOUR ACCOUNT button in the top-right corner. The panel opens with two tabs:
+
+ACCOUNT - your profile: avatar, name, theme, subs, received donations, clips, milestones.
+SETTINGS - chat options: drag, palette, opacity, size, font, animations.
+
+How do I drag the chat?
+1. Open YOUR ACCOUNT -> SETTINGS.
+2. Turn on DRAG CHAT.
+3. In-game, click and drag the chat box with the left mouse button.
+
+To reset the position, click RESET POS next to the toggle.
+
+How do I change the chat palette?
+Open YOUR ACCOUNT -> SETTINGS -> CHAT PALETTE -> click the dropdown. A picker opens with all unlocked palettes. Palettes unlock as your channel grows.
+
+You can also change the main panel palette: click the colored circle in the top-right corner of the channel panel.
+
+How do I change the chat font or size?
+YOUR ACCOUNT -> SETTINGS:
+
+CHAT SIZE - font size and box width.
+CHAT FONT - choose from all fonts in the mod's fonts/ folder and from the game's built-in fonts.
+CHAT ANIMATIONS - pick one of 10 message animation styles.
+
+How do I reset my account?
+Press F8 in-game. This deletes jokerstream_save.txt and starts the registration process again.
+
+Where are my saves stored?
+
+%appdata%\Balatro\Mods\Twitch Balatro\
+  jokerstream_save.txt       - account
+  channel_save.txt           - channel stats
+  palette.txt                - chosen palette
+  clips/                     - clip data and previews
+
+Don't edit these by hand unless you know what you're doing.
+
+How do I add my own chat font?
+1. Prepare a .ttf file.
+2. Put it into:
+
+%appdata%\Balatro\Mods\Twitch Balatro\fonts\yourfont.ttf
+
+3. Restart the game. The font appears in the chat font picker automatically.
+
+Where do I change the mod name or description?
+Edit jokerstream.json in the mod folder. Change name and description. Don't touch id or prefix - that will break all your saves.
+
+How do I re-read the Karal letter?
+The letter is shown once when you click the KARAL button in the channel panel. It cannot be reset, but you can re-read it any time by clicking the button again.
+
+The mod crashes on startup. What do I do?
+1. Make sure Steamodded is installed and up to date.
+2. Check %appdata%\Balatro\Mods\Twitch Balatro\ - the folder must contain main.lua and jokerstream.json.
+3. If you have an old save, delete channel_save.txt and palette.txt, then restart.
+4. If it still crashes - check the log at %appdata%\Balatro\game.log and report the error.
+
+Can I play with other mods?
+Yes. Twitch Balatro doesn't override any vanilla Joker or Voucher, only adds new ones. It's compatible with most content mods. If you find a conflict - report it.
+
+----------------------------------------
+
+Русский
+
+Где найти настройки мода?
+Главное меню -> Mods -> Twitch Balatro -> Config. Там три переключателя:
+
+Chat - показывать или скрывать чат.
+Run Intro - показывать или скрывать вступление "Stream Starting" в начале каждого рана.
+Donators Panel - показывать или скрывать панель топ-донатеров в правом нижнем углу.
+
+Как поменять аватарку?
+1. Подготовь квадратную картинку (PNG). Рекомендуемый размер: 256x256 или 512x512.
+2. Переименуй её в avatar.png.
+3. Положи в папку мода:
+
+%appdata%\Balatro\Mods\Twitch Balatro\assets\icons\avatar.png
+
+4. Перезапусти игру.
+
+Если файла нет или он битый - панель покажет первую букву твоего имени вместо картинки.
+
+Как открыть панель канала?
+В главном меню нажми кнопку YOUR ACCOUNT в правом верхнем углу. Панель откроется с двумя вкладками:
+
+ACCOUNT - профиль: аватар, имя, тема, сабы, полученные донаты, клипы, майлстоуны.
+SETTINGS - настройки чата: перетаскивание, палитра, прозрачность, размер, шрифт, анимации.
+
+Как перетаскивать чат?
+1. Открой YOUR ACCOUNT -> SETTINGS.
+2. Включи DRAG CHAT.
+3. В игре зажми чат левой кнопкой мыши и перетащи.
+
+Сбросить позицию - кнопка RESET POS рядом с переключателем.
+
+Как поменять палитру чата?
+Открой YOUR ACCOUNT -> SETTINGS -> CHAT PALETTE -> нажми на выпадающий список. Откроется окно выбора со всеми доступными палитрами. Палитры открываются по мере роста канала.
+
+Также можно поменять палитру самой панели канала: нажми на цветной кружок в правом верхнем углу панели.
+
+Как поменять шрифт или размер чата?
+YOUR ACCOUNT -> SETTINGS:
+
+CHAT SIZE - размер шрифта и ширина бокса.
+CHAT FONT - выбор из всех шрифтов в папке fonts/ мода и встроенных шрифтов игры.
+CHAT ANIMATIONS - 10 стилей анимации сообщений.
+
+Как сбросить аккаунт?
+Нажми F8 в игре. Это удалит jokerstream_save.txt и запустит регистрацию заново.
+
+Где хранятся сейвы?
+
+%appdata%\Balatro\Mods\Twitch Balatro\
+  jokerstream_save.txt       - аккаунт
+  channel_save.txt           - статистика канала
+  palette.txt                - выбранная палитра
+  clips/                     - клипы и превью
+
+Не редактируй их вручную, если не знаешь, что делаешь.
+
+Как добавить свой шрифт для чата?
+1. Подготовь .ttf файл.
+2. Положи в:
+
+%appdata%\Balatro\Mods\Twitch Balatro\fonts\твойшрифт.ttf
+
+3. Перезапусти игру. Шрифт появится в списке выбора автоматически.
+
+Где поменять название или описание мода?
+Открой jokerstream.json в папке мода. Поменяй name и description. Не трогай id и prefix - иначе сломаются все сейвы.
+
+Как перечитать письмо Карала?
+Письмо показывается один раз при нажатии кнопки KARAL в панели канала. Сбросить его нельзя, но можно перечитать в любой момент, нажав кнопку снова.
+
+Мод крашится при запуске. Что делать?
+1. Убедись, что Steamodded установлен и обновлён.
+2. Проверь %appdata%\Balatro\Mods\Twitch Balatro\ - там должны быть main.lua и jokerstream.json.
+3. Если у тебя старый сейв - удали channel_save.txt и palette.txt, потом перезапусти игру.
+4. Если всё равно крашится - посмотри лог в %appdata%\Balatro\game.log и скинь ошибку.
+
+Можно ли играть с другими модами?
+Да. Twitch Balatro не перезаписывает ни одного джокера или ваучера из ванилы, только добавляет новые. Совместим с большинством контентных модов. Если найдёшь конфликт - сообщи.
+
+----------------------------------------
+
+Если что-то из этого не работает как описано - пиши, поправим.

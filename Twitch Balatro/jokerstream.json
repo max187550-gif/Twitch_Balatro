@@ -1,0 +1,12 @@
+{
+    "id": "jokerstream",
+    "name": "Twitch Balatro",
+    "author": ["Karal"],
+    "description": "A Balatro mod inspired by Twitch streaming culture: chat, streamers, moderators, donations, and clips.",
+    "prefix": "jokerstream",
+    "main_file": "main.lua",
+    "version": "1.0.0",
+    "badge_colour": "9146FF",
+    "icon_path": "icon.png",
+    "dependencies": ["Steamodded (>=1.0.0)"]
+}

@@ -1,0 +1,15 @@
+subs=0
+received=0
+time=0
+display_subs=0
+display_received=0
+display_clips=0
+display_time=0
+cs_donations_enabled=1
+cs_drag_chat=0
+cs_chat_palette=1
+cs_chat_alpha=1
+cs_chat_font_size=18
+cs_chat_box_width=320
+cs_chat_font=1
+cs_chat_anim=2
