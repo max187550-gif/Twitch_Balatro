@@ -14,6 +14,55 @@ local function ensure_config()
 end
 
 -- ============================================
+-- СОХРАНЕНИЕ И ЗАГРУЗКА СОСТОЯНИЯ АДДОНОВ (В ФАЙЛ)
+-- ============================================
+local MOD_PATH = (SMODS and SMODS.current_mod and SMODS.current_mod.path) or G.jokerstream_mod_path or ""
+local ADDON_FILE_NFS = MOD_PATH .. "/addons_state.txt"
+local ADDON_FILE_LFS = "addons_state.txt"
+
+local function save_addon_state()
+    local cfg = ensure_config()
+    local lines = {}
+    for k, v in pairs(cfg) do
+        lines[#lines + 1] = tostring(k) .. "=" .. (v and "1" or "0")
+    end
+    local content = table.concat(lines, "\n")
+    
+    -- Пишем напрямую в файл (надежнее, чем вложенные таблицы SMODS)
+    if NFS then pcall(NFS.write, ADDON_FILE_NFS, content) end
+    pcall(love.filesystem.write, ADDON_FILE_LFS, content)
+    
+    -- Дополнительно сохраняем в конфиг Steamodded на всякий случай
+    if SMODS and SMODS.save_mod_config and SMODS.current_mod then
+        SMODS.save_mod_config(SMODS.current_mod)
+    end
+end
+
+local function load_addon_state()
+    local content
+    if NFS then
+        local ok, data = pcall(NFS.read, ADDON_FILE_NFS)
+        if ok and data and data ~= "" then content = data end
+    end
+    if not content then
+        local ok, data = pcall(love.filesystem.read, ADDON_FILE_LFS)
+        if ok and data and data ~= "" then content = data end
+    end
+    if not content then return end
+    
+    local cfg = ensure_config()
+    for line in content:gmatch("[^\r\n]+") do
+        local k, v = line:match("^([^=]+)=(.*)$")
+        if k and v then
+            cfg[k] = (v == "1")
+        end
+    end
+end
+
+-- Экспортируем наружу, чтобы account.lua мог вызвать при регистрации
+function G.jokerstream_save_addon_state() save_addon_state() end
+
+-- ============================================
 -- ПУБЛИЧНЫЙ API
 -- ============================================
 function G.jokerstream_addon_enabled(key)
@@ -61,7 +110,6 @@ end
 -- ============================================
 -- ДЖОКЕРЫ WATCH DOGS — ЗАГРУЗКА / ВЫГРУЗКА
 -- ============================================
--- ★ ЗДЕСЬ ДОБАВЛЕНЫ ВСЕ НОВЫЕ ДЖОКЕРЫ ★
 local WD_JOKER_KEYS = {
     "j_jokerstream_watcher",
     "j_jokerstream_watcher_glitched",
@@ -140,9 +188,8 @@ function G.jokerstream_set_addon(key, value)
     local new_val = (value == true)
     cfg[key] = new_val
 
-    if SMODS and SMODS.save_mod_config and SMODS.current_mod then
-        SMODS.save_mod_config(SMODS.current_mod)
-    end
+    -- ВЫЗЫВАЕМ СОХРАНЕНИЕ
+    save_addon_state()
 
     if key == "watch_dogs" then
         if new_val then
@@ -248,11 +295,16 @@ function Card:draw(layer, ...)
 end
 
 -- ============================================
--- ДЕФОЛТЫ
+-- ЗАГРУЗКА СОСТОЯНИЯ И ДЕФОЛТЫ
 -- ============================================
+load_addon_state() -- Сначала грузим сохранения из файла
+
 do
     local cfg = ensure_config()
-    if cfg.watch_dogs == nil then cfg.watch_dogs = true end
+    if cfg.watch_dogs == nil then 
+        cfg.watch_dogs = true 
+        save_addon_state() -- Сохраняем дефолт при первом запуске
+    end
 end
 
 print("[JOKER STREAM] addons.lua loaded, registered:",
