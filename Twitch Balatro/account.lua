@@ -155,6 +155,29 @@ end
 
 function G.jokerstream_account_reset()
     jokerstream_save_remove()
+    
+    -- ★ ДОБАВЛЯЕМ ОЧИСТКУ КАНАЛА И КЛИПОВ
+    if NFS then
+        pcall(NFS.remove, MOD_PATH .. "/channel_save.txt")
+        pcall(NFS.remove, MOD_PATH .. "/palette.txt")
+    end
+    pcall(love.filesystem.remove, "jokerstream_channel_save.txt")
+    pcall(love.filesystem.remove, "palette.txt")
+    
+    if G.jokerstream_channel then
+        G.jokerstream_channel.subs = 0
+        G.jokerstream_channel.total_received = 0
+        G.jokerstream_channel.stream_time_total = 0
+        G.jokerstream_channel.clips = {}
+        G.jokerstream_channel.milestones = {}
+    end
+    
+    if G.jokerstream_clips then
+        G.jokerstream_clips.list = {}
+        G.jokerstream_clips.next_slot = 1
+    end
+    -- ★ ----------------------------------------
+
     G.jokerstream_account = { api_key = nil, account_name = nil, real_name = nil, stream_theme = nil }
     G.jokerstream_config.api_key = nil
     G.jokerstream_config.account_name = nil
@@ -164,7 +187,6 @@ function G.jokerstream_account_reset()
     G.jokerstream_registration_start()
     print("[JOKER STREAM] Account reset, registration started")
 end
-
 -- ============================================
 -- РЕГИСТРАЦИЯ (UI)
 -- ============================================
