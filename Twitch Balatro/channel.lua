@@ -1998,7 +1998,15 @@ local function draw_account_tab(panel_x, panel_y, panel_w, pal)
             name = G.jokerstream_config.account_name
         end
         local letter = "?"
-        if name ~= "" then letter = name:sub(1,1):upper() end
+        if name ~= "" then
+            -- ★ ИСПРАВЛЕНИЕ КРАША ИЗ-ЗА РУССКИХ БУКВ (UTF-8)
+            local b = name:byte(1)
+            local len = 1
+            if b >= 0xF0 then len = 4
+            elseif b >= 0xE0 then len = 3
+            elseif b >= 0xC0 then len = 2 end
+            letter = name:sub(1, len):upper()
+        end
         local bgf = jokerstream_channel_font(120); if bgf then love.graphics.setFont(bgf) end
         love.graphics.setColor(pal.accent[1], pal.accent[2], pal.accent[3], 0.35)
         local lw = bgf and bgf:getWidth(letter) or 0
@@ -2217,13 +2225,13 @@ local function draw_account_tab(panel_x, panel_y, panel_w, pal)
                               thumb_w=thumb_w, max_scroll=max_scroll }
     end
 
-    local pr_y = car_y + car_h + 60
+    -- ★ ПОДНЯЛИ БЛОК ВЫШЕ (было 60, стало 25)
+    local pr_y = car_y + car_h + 25
     love.graphics.setColor(pal.dim[1], pal.dim[2], pal.dim[3], 0.6)
     love.graphics.rectangle("fill", panel_x + 30, pr_y - 5, panel_w - 60, 1)
     local mf = jokerstream_channel_font(28); if mf then love.graphics.setFont(mf) end
     love.graphics.setColor(pal.title[1], pal.title[2], pal.title[3], 1)
     love.graphics.print("POPULARITY ROAD:", panel_x + 40, pr_y + 15)
-    local cur_subs = G.jokerstream_channel.subs
     local cf = jokerstream_channel_font(26); if cf then love.graphics.setFont(cf) end
     love.graphics.setColor(1.0, 0.85, 1.0, 1)
     love.graphics.printf(fmt_number(cur_subs) .. " subs",
@@ -2239,18 +2247,23 @@ local function draw_account_tab(panel_x, panel_y, panel_w, pal)
         love.graphics.setColor(1, 0.9, 0.5, 1)
         love.graphics.print("ALL GOALS COMPLETED. YOU ARE A LEGEND.", panel_x + 40, pr_y + 55)
     end
-    local bar_y = pr_y + 95
+
+    -- ★ ПОДНЯЛИ ПОЛОСКУ (было 95, стало 85)
+    local bar_y = pr_y + 85
     local bar_x = panel_x + 50
     local bar_w = panel_w - 100
     local bar_h = 40
     local bar_r = bar_h/2
-    love.graphics.setColor(0.08, 0.04, 0.12, 1)
+    
+    -- Приглушенный фон полоски
+    love.graphics.setColor(0.08, 0.04, 0.12, 0.7)
     love.graphics.rectangle("fill", bar_x - 3, bar_y - 3, bar_w + 6, bar_h + 6, bar_r + 3)
-    love.graphics.setColor(0.14, 0.08, 0.20, 1)
+    love.graphics.setColor(0.14, 0.08, 0.20, 0.7)
     love.graphics.rectangle("fill", bar_x, bar_y, bar_w, bar_h, bar_r)
+    
     local fill_w = bar_w * prog2
     if fill_w > 0 then
-        love.graphics.setColor(pal.accent[1], pal.accent[2], pal.accent[3], 1)
+        love.graphics.setColor(pal.accent[1] * 0.75, pal.accent[2] * 0.75, pal.accent[3] * 0.75, 0.6)
         love.graphics.rectangle("fill", bar_x, bar_y, fill_w, bar_h, bar_r)
     end
     local t2 = love.timer.getTime()
@@ -2258,27 +2271,30 @@ local function draw_account_tab(panel_x, panel_y, panel_w, pal)
         local dx = bar_x + (i-1)/(#G.jokerstream_milestones - 1)*bar_w
         local dy = bar_y + bar_h/2 + math.sin(t2*2 + i*0.7)*4
         local passed = cur_subs >= m.subs
-        love.graphics.setColor(0, 0, 0, 0.5); love.graphics.circle("fill", dx, dy, 11)
+        love.graphics.setColor(0, 0, 0, 0.4); love.graphics.circle("fill", dx, dy, 11)
         local r = passed and 11 or 9
-        if passed then love.graphics.setColor(1, 0.95, 1.0, 1)
-        else love.graphics.setColor(0.30, 0.20, 0.40, 1) end
+        if passed then love.graphics.setColor(0.85, 0.85, 0.90, 0.8)
+        else love.graphics.setColor(0.30, 0.20, 0.40, 0.7) end
         love.graphics.circle("fill", dx, dy, r)
         if passed then
-            love.graphics.setColor(pal.accent[1], pal.accent[2], pal.accent[3], 1)
+            love.graphics.setColor(pal.accent[1] * 0.75, pal.accent[2] * 0.75, pal.accent[3] * 0.75, 0.7)
             love.graphics.circle("fill", dx, dy, r - 4)
         end
     end
     local mkx = bar_x + fill_w
     local pulse = 0.5 + math.abs(math.sin(t2*2))*0.5
     local mkr = bar_h/2 + 5
-    love.graphics.setColor(pal.accent[1], pal.accent[2], pal.accent[3], 0.35*pulse)
+    
+    -- Приглушенный маркер
+    love.graphics.setColor(pal.accent[1] * 0.75, pal.accent[2] * 0.75, pal.accent[3] * 0.75, 0.2*pulse)
     love.graphics.circle("fill", mkx, bar_y + bar_h/2, mkr + 8)
-    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setColor(0.85, 0.85, 0.85, 0.9)
     love.graphics.circle("fill", mkx, bar_y + bar_h/2, mkr - 2)
-    love.graphics.setColor(pal.accent[1], pal.accent[2], pal.accent[3], 1)
+    love.graphics.setColor(pal.accent[1] * 0.75, pal.accent[2] * 0.75, pal.accent[3] * 0.75, 0.8)
     love.graphics.circle("fill", mkx, bar_y + bar_h/2, mkr - 6)
+    
     local pct_f = jokerstream_channel_font(20); if pct_f then love.graphics.setFont(pct_f) end
-    love.graphics.setColor(pal.accent[1], pal.accent[2], pal.accent[3], 1)
+    love.graphics.setColor(pal.accent[1] * 0.8, pal.accent[2] * 0.8, pal.accent[3] * 0.8, 0.9)
     love.graphics.printf(math.floor(prog2*100) .. "%",
         panel_x + panel_w - 300, bar_y + bar_h + 12, 260, "right")
 
@@ -2286,7 +2302,6 @@ local function draw_account_tab(panel_x, panel_y, panel_w, pal)
 
     love.graphics.pop()
 end
-
 -- ============================================
 -- МОДАЛЬНЫЙ ВЫБОР ПАЛИТРЫ ДЛЯ ЧАТА
 -- ============================================

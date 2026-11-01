@@ -156,7 +156,7 @@ end
 function G.jokerstream_account_reset()
     jokerstream_save_remove()
     
-    -- ★ ДОБАВЛЯЕМ ОЧИСТКУ КАНАЛА И КЛИПОВ
+    -- ★ ОЧИСТКА СТАТИСТИКИ КАНАЛА
     if NFS then
         pcall(NFS.remove, MOD_PATH .. "/channel_save.txt")
         pcall(NFS.remove, MOD_PATH .. "/palette.txt")
@@ -164,6 +164,25 @@ function G.jokerstream_account_reset()
     pcall(love.filesystem.remove, "jokerstream_channel_save.txt")
     pcall(love.filesystem.remove, "palette.txt")
     
+    -- ★ ОЧИСТКА ФИЗИЧЕСКИХ ФАЙЛОВ КЛИПОВ
+    local clips_nfs = MOD_PATH .. "/clips"
+    if NFS and NFS.getDirectoryItems then
+        local ok, files = pcall(NFS.getDirectoryItems, clips_nfs)
+        if ok and files then
+            for _, f in ipairs(files) do
+                pcall(NFS.remove, clips_nfs .. "/" .. f)
+            end
+        end
+    end
+    if love.filesystem.getDirectoryItems then
+        local ok, files = pcall(love.filesystem.getDirectoryItems, "jokerstream_clips")
+        if ok and files then
+            for _, f in ipairs(files) do
+                pcall(love.filesystem.remove, "jokerstream_clips/" .. f)
+            end
+        end
+    end
+
     if G.jokerstream_channel then
         G.jokerstream_channel.subs = 0
         G.jokerstream_channel.total_received = 0
@@ -171,12 +190,10 @@ function G.jokerstream_account_reset()
         G.jokerstream_channel.clips = {}
         G.jokerstream_channel.milestones = {}
     end
-    
     if G.jokerstream_clips then
         G.jokerstream_clips.list = {}
         G.jokerstream_clips.next_slot = 1
     end
-    -- ★ ----------------------------------------
 
     G.jokerstream_account = { api_key = nil, account_name = nil, real_name = nil, stream_theme = nil }
     G.jokerstream_config.api_key = nil
