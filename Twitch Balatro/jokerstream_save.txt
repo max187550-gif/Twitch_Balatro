@@ -1,5 +1,0 @@
-api_key=617727630419
-account_name=1zz
-real_name=1z
-stream_theme=1яzz
-saved_at=2026-11-01 21:53:27
